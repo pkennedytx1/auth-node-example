@@ -28,6 +28,7 @@ passport.use(
         passwordField: 'password'
       },
       async (email, password, done) => {
+        console.log('Hitting passport signup', email, password);
         try {
           const user = await UserModel.create({ email, password });
   
@@ -47,19 +48,20 @@ passport.use(
         passwordField: 'password'
       },
       async (email, password, done) => {
+        console.log('Hitting passport login', email, password);
         try {
           const user = await UserModel.findOne({ email });
-  
+          console.log('find user in db', user);
           if (!user) {
             return done(null, false, { message: 'User not found' });
           }
   
           const validate = await user.isValidPassword(password);
-  
+          console.log('validate password', validate);
           if (!validate) {
             return done(null, false, { message: 'Wrong Password' });
           }
-  
+
           return done(null, user, { message: 'Logged in Successfully' });
         } catch (error) {
           return done(error);

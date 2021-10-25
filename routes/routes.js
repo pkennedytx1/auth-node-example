@@ -9,17 +9,18 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/login', (req, res, next) => {
-  res.sendFile('login.html', { root: __dirname })
+  res.sendFile('templates/login.html', { root: __dirname })
 })
 
 router.get('/signup', (req, res, next) => {
-  res.sendFile('signup.html', { root: __dirname })
+  res.sendFile('templates/signup.html', { root: __dirname })
 })
 
 router.post(
     '/signup',
     passport.authenticate('signup', { session: false }),
     async (req, res, next) => {
+      console.log('Hitting the signup return response', req, res)
       res.json({
         message: 'Signup successful',
         user: req.user
@@ -33,6 +34,7 @@ async (req, res, next) => {
     passport.authenticate(
     'login',
     async (err, user, info) => {
+        console.log('Hitting the login route handler', err, user);
         try {
         if (err || !user) {
             const error = new Error('An error occurred.');
