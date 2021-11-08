@@ -6,11 +6,20 @@ services:
     - "8080:8080"
     depends_on:
     - mongo
+    links:
+    - redis
+    environment:
+      - REDIS_URL=redis://pubsub
   mongo:
     image: mongo
     ports:
     - "27017:27017"
     volumes: 
     - data-volume:/data/db
+  redis:
+    image: redis
+    container_name: pubsub
+    expose: 
+      - 6379 
 volumes: 
   data-volume:
